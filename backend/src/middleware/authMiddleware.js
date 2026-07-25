@@ -28,3 +28,5 @@ module.exports = authMiddleware;
 // TODO: double-check token expiry edge case
 
 // fixed missing password length check
+
+// fixed missing password length check
