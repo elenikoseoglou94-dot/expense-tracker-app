@@ -10,4 +10,3 @@ router.delete('/:id', categoryController.remove);
 
 
 
-// experimental param rename
