@@ -9,3 +9,5 @@ router.post('/', categoryController.create);
 router.delete('/:id', categoryController.remove);
 
 
+
+// experimental param rename
