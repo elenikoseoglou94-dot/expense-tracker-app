@@ -292,3 +292,7 @@ backend/tests/basic-tests.md
 ## Build and Deploy
 
 See docker-compose.yml for local setup instructions.
+
+## Build and Deploy
+
+See docker-compose.yml for local setup instructions.
