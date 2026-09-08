@@ -1,74 +1,59 @@
 # Expense Tracker App
 
-## Build και deploy
+## Docker setup
 
-Η εφαρμογή μπορεί να γίνει build και να τρέξει είτε τοπικά χωρίς Docker είτε με Docker Compose. Για τοπική εκτέλεση, απαιτούνται MySQL, backend και frontend.
+The easiest and supported way to run the application is with Docker Compose.
 
-### Τοπική εκτέλεση
+### Prerequisites
 
-1. Δημιούργησε τη βάση δεδομένων MySQL με το όνομα `expense_tracker_db` και τον χρήστη `expense_user`.
-2. Δημιούργησε αρχείο `.env` μέσα στον φάκελο `backend` και πρόσθεσε τα `DATABASE_URL` και `JWT_SECRET`.
-3. Άνοιξε ένα terminal, πήγαινε στο `backend` και εκτέλεσε:
+- Docker Desktop installed and running
+- Ports `3306`, `4000`, and `5173` available on your machine
 
-```bash
-npm install
-npx prisma generate
-npx prisma db push
-npm run dev
-```
+### Run from scratch
 
-4. Άνοιξε δεύτερο terminal, πήγαινε στο `frontend` και εκτέλεσε:
+From the project root, run:
 
 ```bash
-npm install
-npm run dev
-```
-
-5. Το backend τρέχει στο `http://localhost:4000` και το frontend συνήθως στο `http://localhost:5173`.
-
-### Εκτέλεση και deploy με Docker
-
-Η εφαρμογή υποστηρίζει και Docker-based εκτέλεση μέσω `docker-compose.yml`, ώστε frontend, backend και MySQL να σηκώνονται μαζί σαν ξεχωριστά services.
-
-Από τον κεντρικό φάκελο του project εκτέλεσε:
-
-```bash
+docker compose down -v
 docker compose up --build
 ```
 
-Η εντολή αυτή:
-- κάνει build τα images του frontend και του backend
-- σηκώνει MySQL database, backend API και frontend app
-- εφαρμόζει το Prisma schema στη βάση μέσω του backend container
+This starts three services defined in `docker-compose.yml`:
+- `mysql` on port `3306`
+- `backend` on port `4000`
+- `frontend` on port `5173`
 
-Μετά την εκκίνηση:
-- frontend: `http://localhost:5173`
-- backend: `http://localhost:4000`
+The backend waits for MySQL to become healthy and then applies the Prisma schema automatically on startup, so you do **not** need to run `npx prisma db push` manually when using Docker.
+
+### URLs
+
+After startup, open:
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:4000`
 - Swagger UI: `http://localhost:4000/api-docs-ui`
+- OpenAPI JSON: `http://localhost:4000/api-docs`
 
-Για εκτέλεση στο background:
-
-```bash
-docker compose up --build -d
-```
-
-Για τερματισμό:
+### Stop the app
 
 ```bash
 docker compose down
 ```
 
-Για πλήρη καθαρισμό μαζί με τον όγκο της βάσης:
+To also remove the MySQL volume and start again with a clean database:
 
 ```bash
 docker compose down -v
 ```
 
-### Deploy προσέγγιση
+### Troubleshooting
 
-Η ίδια Docker-based δομή μπορεί να χρησιμοποιηθεί και για deploy σε περιβάλλον που υποστηρίζει containers. Σε production περιβάλλον μπορούν να γίνουν deploy ξεχωριστά το frontend, το backend και η MySQL database, ή να χρησιμοποιηθεί container platform που διαβάζει το ίδιο setup και τα αντίστοιχα environment variables.
+- If Docker says a port is already in use, stop the local service using that port and run `docker compose up --build` again.
+- If the frontend build fails with a missing `nginx.conf`, make sure the file `frontend/nginx.conf` exists in the repository.
+- If you changed dependencies or Dockerfiles, rebuild with `docker compose up --build`.
 
-Το Expense Tracker App είναι μια fullstack web εφαρμογή για την καταγραφή και παρακολούθηση προσωπικών εσόδων και εξόδων. Ο χρήστης μπορεί να δημιουργήσει λογαριασμό, να συνδεθεί, να οργανώσει τις κατηγορίες του, να καταχωρίσει κινήσεις και να δει συνοπτικά τα οικονομικά του στοιχεία.
+## Project overview
+
+The Expense Tracker App is a full-stack web application for tracking personal income and expenses. Users can register, sign in, manage their own categories, create transactions, and view a simple dashboard summary.
 
 ## Σκοπός της εφαρμογής
 
