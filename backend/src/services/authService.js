@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const userRepository = require('../repositories/userRepository');
+const categoryRepository = require('../repositories/categoryRepository');
 
 const register = async (formData) => {
   const { fullName, email, password } = formData;
@@ -16,6 +17,12 @@ const register = async (formData) => {
     fullName,
     email,
     passwordHash
+  });
+
+  await categoryRepository.createCategory({
+    name: 'Γενικά',
+    type: 'EXPENSE',
+    userId: newUser.id
   });
 
   return {
