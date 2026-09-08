@@ -8,7 +8,7 @@ const createTransaction = async (userId, formData) => {
   const { title, amount, type, date, note, categoryId } = formData;
 
   if (!title || !amount || !type || !date || !categoryId) {
-    throw new Error('Συμπλήρωσε όλα τα υποχρεωτικά πεδία.');
+    throw new Error('Συμπλήρωσε όλα τα υποχρεωτικά πεδία. Αν δεν υπάρχουν διαθέσιμες κατηγορίες, δημιουργήστε απο το μενού κατηγοριών');
   }
 
   return transactionRepository.createTransaction({

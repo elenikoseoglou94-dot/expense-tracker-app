@@ -25,6 +25,12 @@ const register = async (formData) => {
     userId: newUser.id
   });
 
+  await categoryRepository.createCategory({
+    name: 'Γενικά',
+    type: 'INCOME',
+    userId: newUser.id
+  });
+
   return {
     id: newUser.id,
     fullName: newUser.fullName,
